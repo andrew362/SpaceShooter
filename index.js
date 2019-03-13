@@ -2,9 +2,10 @@ let context, controler, rectangle, bullet, block, loop;
 let nextBullet = true;
 let timer = 0;
 let hiscoreStorage = localStorage.getItem('AsteroidGame') || 0;
-let hiscoreScreen = document.getElementById('hiscore'); 
+let hiscoreScreen = document.getElementById('hiscore');
 let asterArray = [];
 let starsArray = [];
+let explosionArray = [];
 let gameOverFlag = false;
 let score = 0;
 const scoreDiv = document.getElementById('score');
@@ -88,7 +89,8 @@ class Blocks {
 function collision(bullet, asteroid, id) {
   if ((bullet.x + bullet.width / 2 >= asteroid.x) && (bullet.x + bullet.width / 2 <= asteroid.x + asteroid.width) && (bullet.y <= asteroid.y) && (bullet.y >= asteroid.height)) {
     console.log('trafiony');
-        asterArray.splice(id, 1);
+    explosionArray.push(asterArray[id]);
+    asterArray.splice(id, 1);
     score += 1;
     scoreDiv.innerHTML = score;
   }
@@ -182,7 +184,6 @@ loop = function () {
   context.fill();
 
 
-
   if (asterArray.length > 0) {
     for (let i = 0; i < asterArray.length; i++) {
       asterArray[i].y += asterArray[i].y_v;
@@ -200,6 +201,16 @@ loop = function () {
     }
   }
 
+if (explosionArray.length > 0){
+  for (let i = 0; i < explosionArray.length; i++) {
+    context.drawImage(explosion, explosionArray[i].x, explosionArray[i].y, explosionArray[i].width, explosionArray[i].height);
+    if (timer % 100 == 0) {
+      explosionArray.shift();
+    }
+  }
+}
+
+
 };
 
 
@@ -216,7 +227,7 @@ function start() {
 
 function gameOver() {
   window.cancelAnimationFrame(loop);
-  if(hiscoreStorage < score){
+  if (hiscoreStorage < score) {
     localStorage.setItem('AsteroidGame', score);
   }
 
