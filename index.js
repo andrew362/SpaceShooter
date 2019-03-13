@@ -232,7 +232,7 @@ function gameOver() {
   }
 
 
-  if (confirm("GAME OVER \nJeszcze raz?")) {
+  if (confirm("GAME OVER \nTwój wynik: "+score+" \nJeszcze raz?")) {
     location.reload();
   }
 }
