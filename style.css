@@ -23,8 +23,12 @@
   
   }
   
+  #info {
+    height: 10vh;
+  }
   canvas {
   
     background-color:#ffffff;
+    height: 90vh;
   
   }
